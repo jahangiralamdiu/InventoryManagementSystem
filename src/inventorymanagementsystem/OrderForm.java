@@ -1,0 +1,952 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package inventorymanagementsystem;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.print.PrinterException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Jahangir
+ */
+public class OrderForm extends javax.swing.JPanel {
+
+    /**
+     * Creates new form OrderForm
+     */
+    public OrderForm() {
+        initComponents();
+        initiatOrderid();
+        orderTypeInitiate();
+        iniclientid();
+        initProductID();
+        txtDiscount.setText("0.0");
+        tableModel.setColumnIdentifiers(columns);
+        txtGrandTotal.setText("0.0");
+        txtDate.setDate(new Date());
+        btnSave.setEnabled(false);
+        btnNewOrder.setEnabled(false);
+        
+        
+    }
+    
+    void initiatOrderid(){
+        int orderid=0;
+        PreparedStatement pstm=null;
+        try {
+            connection=new ConnectivitySupport();
+            pstm=connection.getConn().prepareStatement("select MAX(order_id) from order_table"); 
+            Connection connh=connection.getConn();
+            
+            ResultSet rs=pstm.executeQuery();
+            if(rs.next()){
+              orderid=rs.getInt(1)+1;
+            }
+            
+            else{
+            orderid=+1;
+            };
+            
+            txtOrderNo.setText(Integer.toString(orderid));
+            rs.close();
+            pstm.close();
+            connection=null;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+    }
+    
+      public void orderTypeInitiate(){
+        try {
+            connection=new ConnectivitySupport();
+            Statement stm=connection.getConn().createStatement();
+            
+            ResultSet rs=stm.executeQuery("select *from order_type");
+            comboOrderType.addItem("Select Order Type");
+                        
+            while(rs.next()){
+                comboOrderType.addItem(rs.getString(1)+"-"+rs.getString(2));
+            }
+            rs.close();
+            stm.close();
+            connection=null;
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ClientEntryForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientEntryForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+      
+ public void iniclientid(){
+       
+        PreparedStatement pstm=null;
+        try {
+            connection=new ConnectivitySupport();
+            pstm=connection.getConn().prepareStatement("select client_id from client");           
+            ResultSet rs=pstm.executeQuery();
+             comboClientID.addItem("Select Client ID");
+            while(rs.next()){
+              comboClientID.addItem(rs.getInt(1));
+            }
+             
+            rs.close();
+            pstm.close();
+            connection=null;
+                    
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        
+    }
+ 
+  public void initProductID(){
+       
+        PreparedStatement pstm=null;
+        try {
+            connection=new ConnectivitySupport();
+            pstm=connection.getConn().prepareStatement("select product_id from product");           
+            ResultSet rs=pstm.executeQuery();
+             comboProductID.addItem("Select Product ID");
+            while(rs.next()){
+              comboProductID.addItem(rs.getInt(1));
+            }
+              
+            rs.close();
+            pstm.close();
+            connection=null;
+                    
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        orderPane = new javax.swing.JScrollPane();
+        orderPanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        txtOrderNo = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtDate = new com.toedter.calendar.JDateChooser();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        comboClientID = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        txtClientName = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtAddress = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtPhone = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        txtQuantity = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        txtDiscount = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        txtVAT = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        salesTable = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        comboProductID = new javax.swing.JComboBox();
+        jLabel20 = new javax.swing.JLabel();
+        txtProductName = new javax.swing.JTextField();
+        jLabel21 = new javax.swing.JLabel();
+        txtStock = new javax.swing.JTextField();
+        jLabel22 = new javax.swing.JLabel();
+        txtUnitPrice = new javax.swing.JTextField();
+        jPanel9 = new javax.swing.JPanel();
+        btnAdd = new javax.swing.JButton();
+        btnNew = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        txtGrandTotal = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        txtCash = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        txtDue = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        comboOrderType = new javax.swing.JComboBox();
+        jPanel11 = new javax.swing.JPanel();
+        btnSave = new javax.swing.JButton();
+        btnPrint = new javax.swing.JButton();
+        btnNewOrder = new javax.swing.JButton();
+        bntFind = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnClose = new javax.swing.JButton();
+
+        orderPanel.setBackground(new java.awt.Color(204, 255, 204));
+
+        jLabel3.setText("Order No :");
+
+        jLabel4.setText("Date :");
+
+        txtDate.setDateFormatString("dd-MM-yyyy");
+
+        jPanel6.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Customer Information", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+        jPanel6.setLayout(new java.awt.GridLayout(2, 4, 20, 12));
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setText("Customer ID :");
+        jPanel6.add(jLabel5);
+
+        comboClientID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboClientIDActionPerformed(evt);
+            }
+        });
+        jPanel6.add(comboClientID);
+
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel6.setText("Customer Name :");
+        jPanel6.add(jLabel6);
+        jPanel6.add(txtClientName);
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Address :");
+        jPanel6.add(jLabel7);
+        jPanel6.add(txtAddress);
+
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel8.setText("Phone :");
+        jPanel6.add(jLabel8);
+        jPanel6.add(txtPhone);
+
+        jPanel7.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel7.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        jPanel7.setLayout(new java.awt.GridLayout(2, 4, 20, 12));
+
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel10.setText("Quantity :");
+        jPanel7.add(jLabel10);
+
+        txtQuantity.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtQuantityKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtQuantityKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtQuantityKeyTyped(evt);
+            }
+        });
+        jPanel7.add(txtQuantity);
+
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel12.setText("Discount :");
+        jPanel7.add(jLabel12);
+
+        txtDiscount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDiscountKeyReleased(evt);
+            }
+        });
+        jPanel7.add(txtDiscount);
+
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel11.setText("VAT :");
+        jPanel7.add(jLabel11);
+        jPanel7.add(txtVAT);
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel9.setText("Total :");
+        jPanel7.add(jLabel9);
+        jPanel7.add(txtTotal);
+
+        salesTable.setModel(tableModel);
+        jScrollPane2.setViewportView(salesTable);
+
+        jPanel8.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED), "Product Information", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP));
+        jPanel8.setLayout(new java.awt.GridLayout(2, 4, 20, 12));
+
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel19.setText("Product ID :");
+        jPanel8.add(jLabel19);
+
+        comboProductID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboProductIDActionPerformed(evt);
+            }
+        });
+        jPanel8.add(comboProductID);
+
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel20.setText("Product  Name :");
+        jPanel8.add(jLabel20);
+        jPanel8.add(txtProductName);
+
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel21.setText("Stock :");
+        jPanel8.add(jLabel21);
+        jPanel8.add(txtStock);
+
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel22.setText("Unit Price :");
+        jPanel8.add(jLabel22);
+        jPanel8.add(txtUnitPrice);
+
+        jPanel9.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel9.setLayout(new java.awt.GridLayout(1, 3, 10, 0));
+
+        btnAdd.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\window_new.png")); // NOI18N
+        btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+        jPanel9.add(btnAdd);
+
+        btnNew.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\tab_new_raised.png")); // NOI18N
+        btnNew.setText("New");
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
+        jPanel9.add(btnNew);
+
+        btnRemove.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\gnome_edit_delete (2).png")); // NOI18N
+        btnRemove.setText("Remove");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
+        jPanel9.add(btnRemove);
+
+        jPanel10.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel10.setLayout(new java.awt.GridLayout(1, 6, 10, 0));
+
+        jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel16.setText("Grand Total :");
+        jPanel10.add(jLabel16);
+        jPanel10.add(txtGrandTotal);
+
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel17.setText("Cash :");
+        jPanel10.add(jLabel17);
+
+        txtCash.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCashKeyReleased(evt);
+            }
+        });
+        jPanel10.add(txtCash);
+
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel18.setText("Due :");
+        jPanel10.add(jLabel18);
+        jPanel10.add(txtDue);
+
+        jLabel13.setText("Order Type :");
+
+        comboOrderType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboOrderTypeActionPerformed(evt);
+            }
+        });
+
+        jPanel11.setBackground(new java.awt.Color(204, 255, 204));
+        jPanel11.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel11.setLayout(new java.awt.GridLayout(1, 0, 10, 0));
+
+        btnSave.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnSave.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\save (1).png")); // NOI18N
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        jPanel11.add(btnSave);
+
+        btnPrint.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnPrint.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\printer (1).png")); // NOI18N
+        btnPrint.setText("Print");
+        btnPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintActionPerformed(evt);
+            }
+        });
+        jPanel11.add(btnPrint);
+
+        btnNewOrder.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnNewOrder.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\tab_new_raised.png")); // NOI18N
+        btnNewOrder.setText("New Order");
+        btnNewOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewOrderActionPerformed(evt);
+            }
+        });
+        jPanel11.add(btnNewOrder);
+
+        bntFind.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        bntFind.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\search.png")); // NOI18N
+        bntFind.setText("Find");
+        bntFind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntFindActionPerformed(evt);
+            }
+        });
+        jPanel11.add(bntFind);
+
+        btnDelete.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnDelete.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\gnome_edit_delete (2).png")); // NOI18N
+        btnDelete.setText("Delete");
+        jPanel11.add(btnDelete);
+
+        btnClose.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnClose.setIcon(new javax.swing.ImageIcon("D:\\Java\\Projects\\Swing\\InventoryByJahangir\\images\\erase.png")); // NOI18N
+        btnClose.setText("Close");
+        btnClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCloseActionPerformed(evt);
+            }
+        });
+        jPanel11.add(btnClose);
+
+        javax.swing.GroupLayout orderPanelLayout = new javax.swing.GroupLayout(orderPanel);
+        orderPanel.setLayout(orderPanelLayout);
+        orderPanelLayout.setHorizontalGroup(
+            orderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orderPanelLayout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(orderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, orderPanelLayout.createSequentialGroup()
+                        .addGroup(orderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(orderPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtOrderNo, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
+                                .addComponent(jLabel13)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboOrderType, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, orderPanelLayout.createSequentialGroup()
+                                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(22, 22, 22))
+                    .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        orderPanelLayout.setVerticalGroup(
+            orderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(orderPanelLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(orderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtOrderNo)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel13)
+                    .addComponent(comboOrderType)
+                    .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        orderPane.setViewportView(orderPanel);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(orderPane, javax.swing.GroupLayout.DEFAULT_SIZE, 906, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(orderPane, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void comboClientIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientIDActionPerformed
+        // TODO add your handling code here:
+        PreparedStatement pstm=null;
+        try {
+            connection=new ConnectivitySupport();
+            String query="select * from client where client_id=?";
+            pstm=connection.getConn().prepareCall(query);
+            pstm.setString(1, comboClientID.getSelectedItem().toString());
+           ResultSet rs=pstm.executeQuery();
+             txtClientName.setText(null);
+                txtAddress.setText(null);
+                txtPhone.setText(null);
+            while(rs.next()){
+                txtClientName.setText(rs.getString("client_name"));
+                txtAddress.setText(rs.getString("client_address"));
+                txtPhone.setText(rs.getString("phone"));
+            }
+            
+            rs.close();
+            pstm.close();
+            connection=null;
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_comboClientIDActionPerformed
+
+    private void comboProductIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboProductIDActionPerformed
+        // TODO add your handling code here:
+       
+        comboProductID.setBackground(new Color(255,255,255));
+        
+        PreparedStatement pstm=null;
+        try {
+            connection=new ConnectivitySupport();
+            String query="select product_name, avail_stock, unit_price from product p, stock s where p.product_id=s.product_id and p.product_id=?";
+            pstm=connection.getConn().prepareCall(query);
+            pstm.setString(1, comboProductID.getSelectedItem().toString());
+           ResultSet rs=pstm.executeQuery();
+             txtProductName.setText(null);
+                txtStock.setText(null);
+                txtUnitPrice.setText(null);
+            while(rs.next()){
+                txtProductName.setText(rs.getString("product_name"));
+                txtStock.setText(Integer.toString(rs.getInt("avail_stock")));
+                txtUnitPrice.setText(Double.toString(rs.getDouble("unit_price")));
+            }
+                rs.close();
+            pstm.close();
+            connection=null;        
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_comboProductIDActionPerformed
+
+    private void txtQuantityKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantityKeyReleased
+        // TODO add your handling code here:
+      calculation();
+      txtQuantity.setBackground(Color.white);
+    }//GEN-LAST:event_txtQuantityKeyReleased
+
+    private void txtDiscountKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDiscountKeyReleased
+        // TODO add your handling code here:
+        calculation();
+    }//GEN-LAST:event_txtDiscountKeyReleased
+
+    private void txtQuantityKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantityKeyTyped
+        // TODO add your handling code here:
+       // calculation();
+    }//GEN-LAST:event_txtQuantityKeyTyped
+
+    private void txtQuantityKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQuantityKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtQuantityKeyPressed
+
+    private void btnPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintActionPerformed
+        try {
+            // TODO add your handling code here:
+
+            salesTable.print();
+        } catch (PrinterException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnPrintActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // TODO add your handling code here:
+        if(comboOrderType.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(this, "Please select Order Type");
+            comboOrderType.grabFocus();
+            comboOrderType.setBackground(Color.red);
+            return;
+        }
+        
+        if(comboProductID.getSelectedIndex()==0){
+            JOptionPane.showMessageDialog(this, "Please select Product ID");
+            comboProductID.grabFocus();
+            comboProductID.setBackground(Color.red);
+            return;
+        }
+        String quantity=txtQuantity.getText();
+        if(quantity.equals("")){
+           JOptionPane.showMessageDialog(this, "Please define Quantity"); 
+           txtQuantity.grabFocus();
+           txtQuantity.setBackground(Color.red);
+           return;
+        }
+        orderline++;
+        Vector rowList=new Vector(9);
+        rowList.add(txtOrderNo.getText()+orderline);
+        rowList.add(comboProductID.getSelectedItem().toString());
+        rowList.add(txtProductName.getText());
+        rowList.add(txtUnitPrice.getText());
+        rowList.add(txtQuantity.getText());
+        rowList.add(txtVAT.getText());
+        rowList.add(txtDiscount.getText());
+        rowList.add(txtTotal.getText());
+        rowList.add(df.format(txtDate.getDate()));
+        
+        tableModel.addRow(rowList);
+        btnAdd.setEnabled(false);
+        
+        double grandTotal=Double.parseDouble(txtGrandTotal.getText());
+        grandTotal+=Double.parseDouble(txtTotal.getText());
+        txtGrandTotal.setText(Double.toString(grandTotal));
+        
+        btnSave.setEnabled(true);       
+        
+        
+        
+      
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        // TODO add your handling code here:
+        comboClientID.setSelectedIndex(0);
+        comboProductID.setSelectedIndex(0);
+        txtQuantity.setText("");
+        txtVAT.setText("");
+        txtTotal.setText("");
+        txtDiscount.setText("0.0");
+        btnAdd.setEnabled(true);      
+        
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        
+              PreparedStatement pstm=null;
+              PreparedStatement pstm2=null;
+              PreparedStatement pstm3=null;
+              PreparedStatement pstm4=null;
+              ResultSet rs=null;
+        try {
+            connection=new ConnectivitySupport();
+            String query="insert into order_table values (?, ?, ?, ?, ?)";
+            pstm=connection.getConn().prepareCall(query);
+            pstm.setString(1, txtOrderNo.getText());
+            pstm.setString(2, comboOrderType.getSelectedItem().toString().split("-")[0]);
+            pstm.setDate(3, java.sql.Date.valueOf(dft.format(txtDate.getDate())));
+            
+            if(comboClientID.getSelectedIndex()==0){
+                pstm.setString(4, null);
+            }
+            
+            else{
+            pstm.setString(4, comboClientID.getSelectedItem().toString());
+            }
+            pstm.setString(5, txtGrandTotal.getText());
+            
+            int addRow=pstm.executeUpdate();
+            
+            String queryOrder="insert into individual_order values(?, ?, ?, ?, ?, ?, ?)";
+            pstm3=connection.getConn().prepareCall(queryOrder);
+            
+            Vector <Vector<String>> dataRows=tableModel.getDataVector();
+            
+            for(Vector<String> vector : dataRows) {
+                
+                pstm3.setString(1, vector.get(0));
+                pstm3.setString(2, txtOrderNo.getText());
+                
+                if(comboClientID.getSelectedIndex()==0){
+                    pstm3.setString(3, null);
+                }
+                else{
+                    pstm3.setString(3, comboClientID.getSelectedItem().toString()); 
+                }
+                
+                pstm3.setString(4, vector.get(1));
+                pstm3.setString(5, vector.get(4)); 
+                pstm3.setString(6, vector.get(7));
+                pstm3.setDate(7, java.sql.Date.valueOf(dft.format(txtDate.getDate())));
+                
+                int rowaff=pstm3.executeUpdate();
+                
+            String queryStock=null;
+                
+            if(comboOrderType.getSelectedIndex()==1){
+                queryStock="update stock set avail_stock=avail_stock-? where product_id=?";
+            }
+            
+            else if(comboOrderType.getSelectedIndex()==2){
+                queryStock="update stock set avail_stock=avail_stock+? where product_id=?";
+            }
+            
+            pstm2=connection.getConn().prepareCall(queryStock);
+            pstm2.setString(1, vector.get(4));
+            pstm2.setString(2, vector.get(1));
+            int stockUpdate=pstm2.executeUpdate();
+                
+            }
+            
+            if(txtCash.getText().equals("")) {
+                
+         
+            }
+            
+            else{
+                   String queryPayment="insert into payment values(?, ?, ?, ?, ?)";
+            pstm4=connection.getConn().prepareCall(queryPayment);
+            
+              int paymentID=1;
+            PreparedStatement pstm5=connection.getConn().prepareCall("Select max(payment_id) from payment");
+            rs=pstm5.executeQuery();            
+            if(rs.next()){
+              paymentID+=rs.getInt(1);
+            }
+            
+            pstm4.setString(1, Integer.toString(paymentID));
+            pstm4.setString(2, txtOrderNo.getText());
+            pstm4.setDate(3, java.sql.Date.valueOf(dft.format(txtDate.getDate())));
+            pstm4.setString(4, txtGrandTotal.getText());
+            pstm4.setString(5, txtDue.getText());
+                      
+            int addPay=pstm4.executeUpdate();
+            }
+            
+ 
+            
+            JOptionPane.showMessageDialog(this, "Saved");
+            
+            btnSave.setEnabled(false);
+            btnNewOrder.setEnabled(true);
+            btnNew.setEnabled(false);
+            
+            rs.close();
+            
+            pstm.close();
+            pstm2.close();
+            pstm3.close();
+            pstm4.close();
+            connection=null;
+         
+                        
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnNewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewOrderActionPerformed
+        // TODO add your handling code here:
+        initiatOrderid();
+        tableModel.setRowCount(0);
+        btnSave.setEnabled(true);
+        comboOrderType.setSelectedIndex(0);
+          comboClientID.setSelectedIndex(0);
+        comboProductID.setSelectedIndex(0);
+        txtQuantity.setText("");
+        txtVAT.setText("");
+        txtTotal.setText("");
+        txtDiscount.setText("0.0");
+        txtGrandTotal.setText("0.0");
+        txtCash.setText("");
+        btnAdd.setEnabled(true);
+        btnNewOrder.setEnabled(false);
+        btnNew.setEnabled(true);
+    }//GEN-LAST:event_btnNewOrderActionPerformed
+
+    private void comboOrderTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboOrderTypeActionPerformed
+        // TODO add your handling code here:
+    
+        if(comboOrderType.getSelectedIndex()!=0){
+            comboOrderType.setBackground(Color.white);
+        }
+    }//GEN-LAST:event_comboOrderTypeActionPerformed
+
+    private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCloseActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_btnCloseActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        // TODO add your handling code here:
+        
+        int row=salesTable.getSelectedRow();
+        tableModel.removeRow(row);
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void txtCashKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCashKeyReleased
+        // TODO add your handling code here:
+        Double totalPayable=Double.parseDouble(txtGrandTotal.getText());
+        Double amount=Double.parseDouble(txtCash.getText());
+        Double due=totalPayable-amount;
+        
+        txtDue.setText(Double.toString(due));
+        
+    }//GEN-LAST:event_txtCashKeyReleased
+
+    private void bntFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntFindActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                SearchForm dialog = new SearchForm(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+       
+        
+    }//GEN-LAST:event_bntFindActionPerformed
+
+    public void calculation(){
+        if(txtUnitPrice.getText().equals(null)){
+            return;
+        }
+        else{
+        int quantity=Integer.parseInt(txtQuantity.getText());
+        double price=Double.parseDouble(txtUnitPrice.getText());
+        double qtp=quantity*price;
+        double vat=(qtp*15)/100;
+        double discount=Double.parseDouble(txtDiscount.getText());
+        double total=(qtp+vat)-discount;
+        txtVAT.setText(Double.toString(vat));
+        txtTotal.setText(Double.toString(total));
+        }
+    }
+    
+    DefaultTableModel tableModel=new DefaultTableModel();
+    
+    SimpleDateFormat df= new SimpleDateFormat("dd-MM-yyyy");
+    SimpleDateFormat dft= new SimpleDateFormat("yyyy-MM-dd");
+    Date dt=new Date();
+    
+    
+    
+    Object [] columns={"Serial Number", "Product ID", "Product Name", "Price", "Quantity", "VAT", "Discount", "Total", "Date"};
+    private ConnectivitySupport connection;
+    private int orderline=0;
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bntFind;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnNew;
+    private javax.swing.JButton btnNewOrder;
+    private javax.swing.JButton btnPrint;
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnSave;
+    protected javax.swing.JComboBox comboClientID;
+    private javax.swing.JComboBox comboOrderType;
+    private javax.swing.JComboBox comboProductID;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane orderPane;
+    private javax.swing.JPanel orderPanel;
+    private javax.swing.JTable salesTable;
+    private javax.swing.JTextField txtAddress;
+    private javax.swing.JTextField txtCash;
+    private javax.swing.JTextField txtClientName;
+    private com.toedter.calendar.JDateChooser txtDate;
+    private javax.swing.JTextField txtDiscount;
+    private javax.swing.JTextField txtDue;
+    private javax.swing.JTextField txtGrandTotal;
+    private javax.swing.JTextField txtOrderNo;
+    private javax.swing.JTextField txtPhone;
+    private javax.swing.JTextField txtProductName;
+    private javax.swing.JTextField txtQuantity;
+    private javax.swing.JTextField txtStock;
+    private javax.swing.JTextField txtTotal;
+    private javax.swing.JTextField txtUnitPrice;
+    private javax.swing.JTextField txtVAT;
+    // End of variables declaration//GEN-END:variables
+}
